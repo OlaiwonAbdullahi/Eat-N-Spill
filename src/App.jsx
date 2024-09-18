@@ -30,6 +30,7 @@ export default function App() {
 
   function handleAddFriend(friends) {
     setFriends((friends) => [...friends, friend]);
+    setShowAddFriend(false);
   }
   return (
     <div className="app">
