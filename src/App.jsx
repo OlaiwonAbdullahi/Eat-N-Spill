@@ -20,6 +20,7 @@ const initialFriends = [
     balance: 0,
   },
 ];
+
 export default function App() {
   const [friends, setFriends] = useState(initialFriends);
   const [showAddFriend, setShowAddFriend] = useState(false);
@@ -28,15 +29,16 @@ export default function App() {
     setShowAddFriend((show) => !show);
   }
 
-  function handleAddFriend(friends) {
-    setFriends((friends) => [...friends, friend]);
+  function handleAddFriend(newFriend) {
+    setFriends((friends) => [...friends, newFriend]);
     setShowAddFriend(false);
   }
+
   return (
     <div className="app">
       <div className="sidebar">
         <FriendList friends={friends} />
-        {showAddFriend && <FormAddFriend anAddFriend={handleAddFriend} />}
+        {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend} />}
 
         <Button onClick={handleShowAddFriend}>
           {showAddFriend ? "Close" : "Add Friends"}
@@ -72,7 +74,7 @@ function Friend({ friend }) {
 
       {friend.balance > 0 && (
         <p className="green">
-          {friend.name} Owe You ${Math.abs(friend.balance)}
+          {friend.name} Owes You ${Math.abs(friend.balance)}
         </p>
       )}
 
@@ -84,11 +86,16 @@ function Friend({ friend }) {
     </li>
   );
 }
-function Button({ children }) {
-  return <button className="button">{children}</button>;
+
+function Button({ children, onClick }) {
+  return (
+    <button className="button" onClick={onClick}>
+      {children}
+    </button>
+  );
 }
 
-function FormAddFriend({ onAddFriends }) {
+function FormAddFriend({ onAddFriend }) {
   const [name, setName] = useState("");
   const [image, setImage] = useState("https://i.pravatar.cc/48?u=499476");
 
@@ -104,10 +111,11 @@ function FormAddFriend({ onAddFriends }) {
       id,
     };
 
-    onAddFriends(newFriend);
+    onAddFriend(newFriend);
     setName("");
     setImage("https://i.pravatar.cc/48?u=499476");
   }
+
   return (
     <form action="" className="form-add-friend" onSubmit={handleSubmit}>
       <label htmlFor="">💕Friend Name</label>
