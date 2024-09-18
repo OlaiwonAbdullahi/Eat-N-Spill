@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialFriends = [
   {
     id: 118836,
@@ -19,21 +21,33 @@ const initialFriends = [
   },
 ];
 export default function App() {
+  const [friends, setFriends] = useState(initialFriends);
+  const [showAddFriend, setShowAddFriend] = useState(false);
+
+  function handleShowAddFriend() {
+    setShowAddFriend((show) => !show);
+  }
+
+  function handleAddFriend(friends) {
+    setFriends((friends) => [...friends, friend]);
+  }
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendList />
+        <FriendList friends={friends} />
+        {showAddFriend && <FormAddFriend anAddFriend={handleAddFriend} />}
 
-        <FormAddFriend />
-        <Button>Add Friends</Button>
+        <Button onClick={handleShowAddFriend}>
+          {showAddFriend ? "Close" : "Add Friends"}
+        </Button>
       </div>
+
       <FormSplitBill />
     </div>
   );
 }
 
-function FriendList() {
-  const friends = initialFriends;
+function FriendList({ friends }) {
   return (
     <ul>
       {friends.map((friend) => (
@@ -73,13 +87,40 @@ function Button({ children }) {
   return <button className="button">{children}</button>;
 }
 
-function FormAddFriend() {
+function FormAddFriend({ onAddFriends }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("https://i.pravatar.cc/48?u=499476");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!name || !image) return;
+    const id = crypto.randomUUID();
+    const newFriend = {
+      name,
+      image: `${image}?=${id}`,
+      balance: 0,
+      id,
+    };
+
+    onAddFriends(newFriend);
+    setName("");
+    setImage("https://i.pravatar.cc/48?u=499476");
+  }
   return (
-    <form action="" className="form-add-friend">
+    <form action="" className="form-add-friend" onSubmit={handleSubmit}>
       <label htmlFor="">💕Friend Name</label>
-      <input type="text" />
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
       <label htmlFor="">🌍Image URL</label>
-      <input type="text" />
+      <input
+        type="text"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+      />
 
       <Button>Add</Button>
     </form>
