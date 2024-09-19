@@ -50,7 +50,7 @@ export default function App() {
         </Button>
       </div>
 
-      {selectedFriend && <FormSplitBill />}
+      {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} />}
     </div>
   );
 }
@@ -141,20 +141,20 @@ function FormAddFriend({ onAddFriend }) {
   );
 }
 
-function FormSplitBill() {
+function FormSplitBill({ selectedFriend }) {
   return (
     <form action="" className="form-split-bill">
-      <h2>Split a bill with X </h2>
+      <h2>Split a bill with {selectedFriend.name} </h2>
       <label htmlFor="">💰Bill Value</label>
       <input type="number" />
       <label htmlFor="">💳Your Expenses</label>
       <input type="text" />
-      <label htmlFor="">💱X'expenses</label>
+      <label htmlFor="">💱{selectedFriend.name}'s expenses</label>
       <input type="text" disabled />
       <label htmlFor="">😁 Who's Paying The Bill</label>
       <select name="" id="">
         <option value="user">You</option>
-        <option value="friend">X</option>
+        <option value="friend">{selectedFriend.name}</option>
       </select>
       <Button>Split Bills</Button>
     </form>
