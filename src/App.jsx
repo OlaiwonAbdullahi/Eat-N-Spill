@@ -174,6 +174,7 @@ function FormSplitBill({ selectedFriend, onSplitBill }) {
     e.preventDefault();
 
     if (!bill || !expenses) return;
+    onSplitBill(whoIsPaying === "user" ? paidByFriend : -paidByFriend);
   }
   return (
     <form action="" className="form-split-bill" onSubmit={handleSubmit}>
